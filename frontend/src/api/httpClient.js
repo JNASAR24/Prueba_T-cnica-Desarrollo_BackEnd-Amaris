@@ -1,4 +1,19 @@
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8081";
+function resolveApiBaseUrl() {
+  const configuredBaseUrl = import.meta.env.VITE_API_BASE_URL?.trim();
+  if (configuredBaseUrl) {
+    return configuredBaseUrl;
+  }
+
+  // En desarrollo local mantenemos el backend por defecto en 8081.
+  if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
+    return "http://localhost:8081";
+  }
+
+  // En despliegues https (CloudFront), consumir mismo origen evita mixed-content.
+  return window.location.origin;
+}
+
+const API_BASE_URL = resolveApiBaseUrl();
 
 /**
  * Cliente HTTP base.

@@ -7,7 +7,7 @@ import StatusMessage from "../components/StatusMessage";
 
 export default function LoginPage() {
   const [documentNumber, setDocumentNumber] = useState("123456789");
-  const [password, setPassword] = useState("ChangeMe123!");
+  const [password, setPassword] = useState("123456");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const { setSession } = useAuth();
@@ -31,7 +31,10 @@ export default function LoginPage() {
   }
 
   return (
-    <AppShell title="BTG Funds Portal">
+    <AppShell
+      title="BTG Funds - Prueba Tecnica"
+      subtitle="Autenticacion para consumir el microservicio de fondos"
+    >
       <main className="panel auth-panel">
         <h2>Inicio de sesion</h2>
         <form onSubmit={handleSubmit}>

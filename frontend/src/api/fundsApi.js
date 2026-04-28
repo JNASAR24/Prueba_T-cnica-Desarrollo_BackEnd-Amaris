@@ -11,19 +11,19 @@ export function getFunds(token) {
   return request("/api/v1/funds", { token });
 }
 
-export function createSubscription(token, fundId, notificationChannel) {
+export function createSubscription(token, payload) {
   return request("/api/v1/subscriptions", {
     method: "POST",
     token,
-    body: { fundId, notificationChannel }
+    body: payload
   });
 }
 
-export function cancelSubscription(token, subscriptionId, notificationChannel) {
+export function cancelSubscription(token, subscriptionId, payload) {
   return request(`/api/v1/subscriptions/${subscriptionId}`, {
     method: "DELETE",
     token,
-    body: { notificationChannel }
+    body: payload
   });
 }
 
