@@ -24,10 +24,3 @@ security:
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
-
-logging:
-  level:
-    root: INFO
-    com.btg.funds: INFO
-  pattern:
-    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{36} - %msg%n"

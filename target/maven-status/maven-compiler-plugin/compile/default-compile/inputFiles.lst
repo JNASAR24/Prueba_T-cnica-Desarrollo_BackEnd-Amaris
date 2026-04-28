@@ -50,6 +50,7 @@ C:\Users\Usuario\Documents\Codex\2026-04-27\hola\Prueba_Técnica–Desarrollo_Ba
 C:\Users\Usuario\Documents\Codex\2026-04-27\hola\Prueba_Técnica–Desarrollo_BackEnd-Amaris\src\main\java\com\btg\funds\infrastructure\config\DataSeeder.java
 C:\Users\Usuario\Documents\Codex\2026-04-27\hola\Prueba_Técnica–Desarrollo_BackEnd-Amaris\src\main\java\com\btg\funds\infrastructure\config\OpenApiConfig.java
 C:\Users\Usuario\Documents\Codex\2026-04-27\hola\Prueba_Técnica–Desarrollo_BackEnd-Amaris\src\main\java\com\btg\funds\infrastructure\config\SecurityConfig.java
+C:\Users\Usuario\Documents\Codex\2026-04-27\hola\Prueba_Técnica–Desarrollo_BackEnd-Amaris\src\main\java\com\btg\funds\infrastructure\config\WebConfig.java
 C:\Users\Usuario\Documents\Codex\2026-04-27\hola\Prueba_Técnica–Desarrollo_BackEnd-Amaris\src\main\java\com\btg\funds\infrastructure\exception\GlobalExceptionHandler.java
 C:\Users\Usuario\Documents\Codex\2026-04-27\hola\Prueba_Técnica–Desarrollo_BackEnd-Amaris\src\main\java\com\btg\funds\infrastructure\logging\HttpLoggingFilter.java
 C:\Users\Usuario\Documents\Codex\2026-04-27\hola\Prueba_Técnica–Desarrollo_BackEnd-Amaris\src\main\java\com\btg\funds\infrastructure\security\ClientUserDetailsService.java

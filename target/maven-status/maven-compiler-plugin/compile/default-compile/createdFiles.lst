@@ -19,6 +19,7 @@ com\btg\funds\application\service\FundQueryService.class
 com\btg\funds\infrastructure\adapter\in\rest\SubscriptionController.class
 com\btg\funds\infrastructure\adapter\in\rest\TransactionController.class
 com\btg\funds\infrastructure\adapter\out\persistence\postgres\repository\SpringTransactionRepository.class
+com\btg\funds\infrastructure\config\WebConfig.class
 com\btg\funds\infrastructure\adapter\out\notification\MockNotificationAdapter.class
 com\btg\funds\infrastructure\adapter\out\persistence\postgres\repository\SpringSubscriptionRepository.class
 com\btg\funds\domain\exception\InsufficientBalanceException.class
