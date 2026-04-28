@@ -186,3 +186,4 @@ Execution order:
 ## Documentation
 
 - Test manual (final): `docs/Manual_Pruebas_Funds_API_vFinal.pdf`
+- Clone guide addendum: `docs/Manual_Pruebas_Funds_API_Anexo_Clonacion.md`
