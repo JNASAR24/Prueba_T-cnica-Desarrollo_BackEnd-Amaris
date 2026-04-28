@@ -1,6 +1,6 @@
-# BTG Funds API - Java + Spring Boot + Hexagonal Architecture
+# BTG Funds API + Frontend - Java + Spring Boot + Hexagonal Architecture
 
-Banking API for investment funds with clean architecture, JWT security, PostgreSQL persistence (pgAdmin compatible), and AWS deployment artifacts.
+Banking solution for investment funds with clean architecture, JWT security, PostgreSQL persistence (pgAdmin compatible), AWS deployment, and React frontend.
 
 ## Tech Stack
 
@@ -10,7 +10,8 @@ Banking API for investment funds with clean architecture, JWT security, PostgreS
 - Spring Data JPA + PostgreSQL
 - JUnit 5 + Mockito
 - OpenAPI/Swagger
-- Terraform (AWS)
+- React + Vite (frontend)
+- AWS (Elastic Beanstalk, RDS, S3, CloudFront, SNS)
 
 ## Architecture (Hexagonal)
 
@@ -66,7 +67,7 @@ src/main/java/com/btg/funds
 ## Seed User
 
 - Document: `123456789`
-- Password: `ChangeMe123!`
+- Password: `123456`
 - Role: `USER`
 
 ## API Endpoints
@@ -80,21 +81,20 @@ src/main/java/com/btg/funds
 Swagger UI: `http://localhost:8080/swagger-ui.html`
 OpenAPI JSON: `http://localhost:8080/v3/api-docs`
 
+> Note: in this project the backend commonly runs on port `8081` locally.
+
 ## Run with PostgreSQL / pgAdmin
 
 1. Create DB in pgAdmin: `funds_db`
 2. Ensure credentials match:
    - `DB_URL=jdbc:postgresql://localhost:5432/funds_db`
    - `DB_USERNAME=postgres`
-   - `DB_PASSWORD=postgres`
+   - `DB_PASSWORD=<your_local_password>`
+   - `JWT_SECRET=<at-least-32-chars>`
 3. Run:
    - `mvn clean test`
    - `mvn spring-boot:run`
 4. Open Swagger and authorize with JWT from login endpoint.
-
-Also set:
-
-- `JWT_SECRET`
 
 ## Run with AWS RDS PostgreSQL
 
@@ -103,14 +103,51 @@ Use Spring profile `aws`.
 Environment variables:
 
 - `SPRING_PROFILES_ACTIVE=aws`
+- `SERVER_PORT=5000`
 - `DB_URL=jdbc:postgresql://funds-db-rds2.cgxoc8kks46u.us-east-1.rds.amazonaws.com:5432/postgres?sslmode=require`
 - `DB_USERNAME=postgres`
 - `DB_PASSWORD=<your-rds-password>`
 - `JWT_SECRET=<at-least-32-chars>`
+- `NOTIFICATION_PROVIDER=SNS` (or `MOCK`)
+- `AWS_REGION=us-east-1`
+- `SNS_EMAIL_TOPIC_ARN=arn:aws:sns:us-east-1:746902954826:funds-email-notifications`
 
 Run:
 
 - `mvn spring-boot:run`
+
+## Frontend (React)
+
+Path: `frontend/`
+
+Local run:
+
+1. `cd frontend`
+2. `npm install`
+3. `npm run dev`
+4. Open `http://localhost:5173`
+
+Production build:
+
+1. `cd frontend`
+2. `npm run build`
+3. Upload `frontend/dist/*` to S3 bucket `pt-amaris-frontend-746902954826`
+4. Create CloudFront invalidation with path `/*`
+
+Frontend URL (AWS):
+
+- `https://d2jbrhwnav2xw1.cloudfront.net`
+
+### CloudFront API routing (important)
+
+To avoid mixed-content and CORS issues in production, add a CloudFront behavior:
+
+- Path pattern: `/api/*`
+- Origin: `pt-be-amaris.us-east-1.elasticbeanstalk.com`
+- Viewer protocol policy: `Redirect HTTP to HTTPS`
+- Allowed methods: `GET, HEAD, OPTIONS, PUT, POST, PATCH, DELETE`
+- Cache policy: `CachingDisabled`
+- Origin request policy: `AllViewer`
 
 ## AWS Terraform
 
@@ -127,3 +164,25 @@ If you want, I can also migrate Terraform to `RDS PostgreSQL` so infra matches p
 ## Postman
 
 - `postman/funds-api.postman_collection.json`
+- `postman/funds-api.local.postman_environment.json`
+- `postman/funds-api.aws.postman_environment.json`
+
+Execution order:
+
+1. `POST /api/v1/auth/login`
+2. `GET /api/v1/funds`
+3. `POST /api/v1/subscriptions`
+4. `GET /api/v1/transactions`
+5. `DELETE /api/v1/subscriptions/{id}`
+6. `GET /api/v1/transactions`
+
+## URLs
+
+- Backend Swagger local: `http://localhost:8081/swagger-ui.html`
+- Backend Swagger AWS: `http://pt-be-amaris.us-east-1.elasticbeanstalk.com/swagger-ui.html`
+- Frontend local: `http://localhost:5173`
+- Frontend AWS: `https://d2jbrhwnav2xw1.cloudfront.net`
+
+## Documentation
+
+- Test manual (final): `docs/Manual_Pruebas_Funds_API_vFinal.pdf`
