@@ -96,6 +96,22 @@ Also set:
 
 - `JWT_SECRET`
 
+## Run with AWS RDS PostgreSQL
+
+Use Spring profile `aws`.
+
+Environment variables:
+
+- `SPRING_PROFILES_ACTIVE=aws`
+- `DB_URL=jdbc:postgresql://funds-db-rds2.cgxoc8kks46u.us-east-1.rds.amazonaws.com:5432/postgres?sslmode=require`
+- `DB_USERNAME=postgres`
+- `DB_PASSWORD=<your-rds-password>`
+- `JWT_SECRET=<at-least-32-chars>`
+
+Run:
+
+- `mvn spring-boot:run`
+
 ## AWS Terraform
 
 Folder: `terraform/`

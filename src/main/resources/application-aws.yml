@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://funds-db-rds2.cgxoc8kks46u.us-east-1.rds.amazonaws.com:5432/postgres?sslmode=require}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:change-me}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 5
+      minimum-idle: 1
+      connection-timeout: 30000
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: false
+    open-in-view: false
+
+logging:
+  level:
+    root: INFO
+    com.btg.funds: INFO
