@@ -1,292 +1,390 @@
 {
   "info": {
-    "name": "BTG Funds API - Ordered Flow",
-    "_postman_id": "9a4d62c3-1b1f-4d6a-9b62-e3e0f95b3c2b",
-    "description": "Functional execution flow: login -> funds -> subscribe -> history -> cancel -> history",
+    "name": "BTG Funds API - Local y AWS",
+    "_postman_id": "f95c59fb-9ad9-4c5e-a7d2-998d6f8d1e23",
+    "description": "Coleccion completa para probar flujo de autenticacion, fondos, suscripcion, cancelacion e historial en ambientes Local y AWS.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
     {
-      "name": "01 - Login (Get JWT)",
-      "event": [
+      "name": "Links de referencia",
+      "item": [
         {
-          "listen": "test",
-          "script": {
-            "exec": [
-              "pm.test('Status is 200', function () { pm.response.to.have.status(200); });",
-              "const json = pm.response.json();",
-              "pm.expect(json.token).to.be.a('string');",
-              "pm.collectionVariables.set('token', json.token);"
-            ],
-            "type": "text/javascript"
+          "name": "Swagger Local",
+          "request": {
+            "method": "GET",
+            "url": "{{swaggerLocalUrl}}"
           }
-        }
-      ],
-      "request": {
-        "method": "POST",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
-          }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"documentNumber\": \"123456789\",\n  \"password\": \"ChangeMe123!\"\n}"
         },
-        "url": {
-          "raw": "{{baseUrl}}/api/v1/auth/login",
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "path": [
-            "api",
-            "v1",
-            "auth",
-            "login"
-          ]
+        {
+          "name": "Swagger AWS",
+          "request": {
+            "method": "GET",
+            "url": "{{swaggerAwsUrl}}"
+          }
+        },
+        {
+          "name": "Frontend Local",
+          "request": {
+            "method": "GET",
+            "url": "{{frontendLocalUrl}}"
+          }
+        },
+        {
+          "name": "Frontend AWS",
+          "request": {
+            "method": "GET",
+            "url": "{{frontendAwsUrl}}"
+          }
         }
-      }
+      ]
     },
     {
-      "name": "02 - List Funds",
-      "event": [
+      "name": "Flujo Local",
+      "item": [
         {
-          "listen": "prerequest",
-          "script": {
-            "exec": [
-              "pm.request.headers.upsert({ key: 'Authorization', value: 'Bearer ' + pm.collectionVariables.get('token') });"
+          "name": "01 - Login Local",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', function () { pm.response.to.have.status(200); });",
+                  "const body = pm.response.json();",
+                  "pm.collectionVariables.set('localToken', body.token);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
-            "type": "text/javascript"
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"documentNumber\": \"123456789\",\n  \"password\": \"ChangeMe123!\"\n}"
+            },
+            "url": "{{baseUrlLocal}}/api/v1/auth/login"
           }
         },
         {
-          "listen": "test",
-          "script": {
-            "exec": [
-              "pm.test('Status is 200', function () { pm.response.to.have.status(200); });",
-              "const data = pm.response.json();",
-              "pm.expect(data.length).to.be.greaterThan(0);",
-              "pm.collectionVariables.set('fundId', data[0].id);"
+          "name": "02 - List Funds Local",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.request.headers.upsert({ key: 'Authorization', value: 'Bearer ' + pm.collectionVariables.get('localToken') });"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', function () { pm.response.to.have.status(200); });",
+                  "const data = pm.response.json();",
+                  "if (data.length > 0) { pm.collectionVariables.set('localFundId', data[0].id); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrlLocal}}/api/v1/funds"
+          }
+        },
+        {
+          "name": "03 - Subscribe Local",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.request.headers.upsert({ key: 'Authorization', value: 'Bearer ' + pm.collectionVariables.get('localToken') });"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
+                  "const body = pm.response.json();",
+                  "pm.collectionVariables.set('localSubscriptionId', body.id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
-            "type": "text/javascript"
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fundId\": \"{{localFundId}}\",\n  \"notificationChannel\": \"EMAIL\"\n}"
+            },
+            "url": "{{baseUrlLocal}}/api/v1/subscriptions"
+          }
+        },
+        {
+          "name": "04 - Transactions Local",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.request.headers.upsert({ key: 'Authorization', value: 'Bearer ' + pm.collectionVariables.get('localToken') });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrlLocal}}/api/v1/transactions"
+          }
+        },
+        {
+          "name": "05 - Cancel Local",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.request.headers.upsert({ key: 'Authorization', value: 'Bearer ' + pm.collectionVariables.get('localToken') });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"notificationChannel\": \"SMS\"\n}"
+            },
+            "url": "{{baseUrlLocal}}/api/v1/subscriptions/{{localSubscriptionId}}"
           }
         }
-      ],
-      "request": {
-        "method": "GET",
-        "header": [],
-        "url": {
-          "raw": "{{baseUrl}}/api/v1/funds",
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "path": [
-            "api",
-            "v1",
-            "funds"
-          ]
-        }
-      }
+      ]
     },
     {
-      "name": "03 - Create Subscription",
-      "event": [
+      "name": "Flujo AWS",
+      "item": [
         {
-          "listen": "prerequest",
-          "script": {
-            "exec": [
-              "pm.request.headers.upsert({ key: 'Authorization', value: 'Bearer ' + pm.collectionVariables.get('token') });"
-            ],
-            "type": "text/javascript"
-          }
-        },
-        {
-          "listen": "test",
-          "script": {
-            "exec": [
-              "pm.test('Status is 201', function () { pm.response.to.have.status(201); });",
-              "const json = pm.response.json();",
-              "pm.expect(json.id).to.be.a('string');",
-              "pm.collectionVariables.set('subscriptionId', json.id);"
-            ],
-            "type": "text/javascript"
-          }
-        }
-      ],
-      "request": {
-        "method": "POST",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
-          }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"fundId\": \"{{fundId}}\",\n  \"notificationChannel\": \"EMAIL\"\n}"
-        },
-        "url": {
-          "raw": "{{baseUrl}}/api/v1/subscriptions",
-          "host": [
-            "{{baseUrl}}"
+          "name": "01 - Login AWS",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', function () { pm.response.to.have.status(200); });",
+                  "const body = pm.response.json();",
+                  "pm.collectionVariables.set('awsToken', body.token);"
+                ]
+              }
+            }
           ],
-          "path": [
-            "api",
-            "v1",
-            "subscriptions"
-          ]
-        }
-      }
-    },
-    {
-      "name": "04 - Transaction History (After Subscribe)",
-      "event": [
-        {
-          "listen": "prerequest",
-          "script": {
-            "exec": [
-              "pm.request.headers.upsert({ key: 'Authorization', value: 'Bearer ' + pm.collectionVariables.get('token') });"
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
-            "type": "text/javascript"
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"documentNumber\": \"123456789\",\n  \"password\": \"ChangeMe123!\"\n}"
+            },
+            "url": "{{baseUrlAws}}/api/v1/auth/login"
           }
         },
         {
-          "listen": "test",
-          "script": {
-            "exec": [
-              "pm.test('Status is 200', function () { pm.response.to.have.status(200); });",
-              "const arr = pm.response.json();",
-              "pm.expect(Array.isArray(arr)).to.eql(true);"
-            ],
-            "type": "text/javascript"
-          }
-        }
-      ],
-      "request": {
-        "method": "GET",
-        "header": [],
-        "url": {
-          "raw": "{{baseUrl}}/api/v1/transactions",
-          "host": [
-            "{{baseUrl}}"
+          "name": "02 - List Funds AWS",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.request.headers.upsert({ key: 'Authorization', value: 'Bearer ' + pm.collectionVariables.get('awsToken') });"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', function () { pm.response.to.have.status(200); });",
+                  "const data = pm.response.json();",
+                  "if (data.length > 0) { pm.collectionVariables.set('awsFundId', data[0].id); }"
+                ]
+              }
+            }
           ],
-          "path": [
-            "api",
-            "v1",
-            "transactions"
-          ]
-        }
-      }
-    },
-    {
-      "name": "05 - Cancel Subscription",
-      "event": [
-        {
-          "listen": "prerequest",
-          "script": {
-            "exec": [
-              "pm.request.headers.upsert({ key: 'Authorization', value: 'Bearer ' + pm.collectionVariables.get('token') });"
-            ],
-            "type": "text/javascript"
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrlAws}}/api/v1/funds"
           }
         },
         {
-          "listen": "test",
-          "script": {
-            "exec": [
-              "pm.test('Status is 200', function () { pm.response.to.have.status(200); });",
-              "const json = pm.response.json();",
-              "pm.expect(json.subscriptionId).to.eql(pm.collectionVariables.get('subscriptionId'));",
-              "pm.expect(json.message).to.be.a('string');"
-            ],
-            "type": "text/javascript"
-          }
-        }
-      ],
-      "request": {
-        "method": "DELETE",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
-          }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"notificationChannel\": \"SMS\"\n}"
-        },
-        "url": {
-          "raw": "{{baseUrl}}/api/v1/subscriptions/{{subscriptionId}}",
-          "host": [
-            "{{baseUrl}}"
+          "name": "03 - Subscribe AWS",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.request.headers.upsert({ key: 'Authorization', value: 'Bearer ' + pm.collectionVariables.get('awsToken') });"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
+                  "const body = pm.response.json();",
+                  "pm.collectionVariables.set('awsSubscriptionId', body.id);"
+                ]
+              }
+            }
           ],
-          "path": [
-            "api",
-            "v1",
-            "subscriptions",
-            "{{subscriptionId}}"
-          ]
-        }
-      }
-    },
-    {
-      "name": "06 - Transaction History (After Cancel)",
-      "event": [
-        {
-          "listen": "prerequest",
-          "script": {
-            "exec": [
-              "pm.request.headers.upsert({ key: 'Authorization', value: 'Bearer ' + pm.collectionVariables.get('token') });"
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
-            "type": "text/javascript"
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fundId\": \"{{awsFundId}}\",\n  \"notificationChannel\": \"EMAIL\"\n}"
+            },
+            "url": "{{baseUrlAws}}/api/v1/subscriptions"
           }
         },
         {
-          "listen": "test",
-          "script": {
-            "exec": [
-              "pm.test('Status is 200', function () { pm.response.to.have.status(200); });",
-              "const arr = pm.response.json();",
-              "pm.expect(Array.isArray(arr)).to.eql(true);",
-              "pm.expect(arr.length).to.be.greaterThan(0);"
+          "name": "04 - Transactions AWS",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.request.headers.upsert({ key: 'Authorization', value: 'Bearer ' + pm.collectionVariables.get('awsToken') });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrlAws}}/api/v1/transactions"
+          }
+        },
+        {
+          "name": "05 - Cancel AWS",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.request.headers.upsert({ key: 'Authorization', value: 'Bearer ' + pm.collectionVariables.get('awsToken') });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
-            "type": "text/javascript"
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"notificationChannel\": \"SMS\"\n}"
+            },
+            "url": "{{baseUrlAws}}/api/v1/subscriptions/{{awsSubscriptionId}}"
           }
         }
-      ],
-      "request": {
-        "method": "GET",
-        "header": [],
-        "url": {
-          "raw": "{{baseUrl}}/api/v1/transactions",
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "path": [
-            "api",
-            "v1",
-            "transactions"
-          ]
-        }
-      }
+      ]
     }
   ],
   "variable": [
     {
-      "key": "baseUrl",
+      "key": "baseUrlLocal",
       "value": "http://localhost:8081"
     },
     {
-      "key": "token",
+      "key": "baseUrlAws",
+      "value": "http://pt-be-amaris.us-east-1.elasticbeanstalk.com"
+    },
+    {
+      "key": "frontendLocalUrl",
+      "value": "http://localhost:5173"
+    },
+    {
+      "key": "frontendAwsUrl",
+      "value": "https://d2jbrhwnav2xw1.cloudfront.net"
+    },
+    {
+      "key": "swaggerLocalUrl",
+      "value": "http://localhost:8081/swagger-ui.html"
+    },
+    {
+      "key": "swaggerAwsUrl",
+      "value": "http://pt-be-amaris.us-east-1.elasticbeanstalk.com/swagger-ui.html"
+    },
+    {
+      "key": "localToken",
       "value": ""
     },
     {
-      "key": "fundId",
+      "key": "localFundId",
       "value": "1"
     },
     {
-      "key": "subscriptionId",
+      "key": "localSubscriptionId",
+      "value": ""
+    },
+    {
+      "key": "awsToken",
+      "value": ""
+    },
+    {
+      "key": "awsFundId",
+      "value": "1"
+    },
+    {
+      "key": "awsSubscriptionId",
       "value": ""
     }
   ]
