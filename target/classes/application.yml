@@ -24,3 +24,6 @@ security:
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
+
+notification:
+  provider: ${NOTIFICATION_PROVIDER:MOCK}

@@ -20,3 +20,10 @@ logging:
   level:
     root: ${LOG_LEVEL_ROOT:INFO}
     com.btg.funds: ${LOG_LEVEL_APP:INFO}
+
+aws:
+  region: ${AWS_REGION:us-east-1}
+
+notification:
+  sns:
+    email-topic-arn: ${SNS_EMAIL_TOPIC_ARN:}

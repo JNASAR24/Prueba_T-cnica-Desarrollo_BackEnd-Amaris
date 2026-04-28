@@ -4,10 +4,12 @@ import com.btg.funds.domain.model.NotificationChannel;
 import com.btg.funds.domain.port.out.NotificationPort;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 @Component
+@ConditionalOnProperty(name = "notification.provider", havingValue = "MOCK", matchIfMissing = true)
 public class MockNotificationAdapter implements NotificationPort {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MockNotificationAdapter.class);

@@ -54,5 +54,7 @@ com\btg\funds\infrastructure\adapter\in\rest\dto\ApiErrorResponse.class
 com\btg\funds\domain\exception\NotFoundException.class
 com\btg\funds\infrastructure\adapter\out\persistence\postgres\SubscriptionRepositoryAdapter.class
 com\btg\funds\domain\port\in\AuthUseCase.class
+com\btg\funds\infrastructure\adapter\out\notification\SnsNotificationAdapter.class
 com\btg\funds\infrastructure\adapter\out\persistence\postgres\repository\SpringFundRepository.class
+com\btg\funds\infrastructure\config\AwsSnsConfig.class
 com\btg\funds\application\service\TransactionQueryService.class

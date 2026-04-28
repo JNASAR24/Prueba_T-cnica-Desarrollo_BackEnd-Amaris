@@ -35,6 +35,7 @@ C:\Users\Usuario\Documents\Codex\2026-04-27\hola\Prueba_Técnica–Desarrollo_Ba
 C:\Users\Usuario\Documents\Codex\2026-04-27\hola\Prueba_Técnica–Desarrollo_BackEnd-Amaris\src\main\java\com\btg\funds\infrastructure\adapter\in\rest\SubscriptionController.java
 C:\Users\Usuario\Documents\Codex\2026-04-27\hola\Prueba_Técnica–Desarrollo_BackEnd-Amaris\src\main\java\com\btg\funds\infrastructure\adapter\in\rest\TransactionController.java
 C:\Users\Usuario\Documents\Codex\2026-04-27\hola\Prueba_Técnica–Desarrollo_BackEnd-Amaris\src\main\java\com\btg\funds\infrastructure\adapter\out\notification\MockNotificationAdapter.java
+C:\Users\Usuario\Documents\Codex\2026-04-27\hola\Prueba_Técnica–Desarrollo_BackEnd-Amaris\src\main\java\com\btg\funds\infrastructure\adapter\out\notification\SnsNotificationAdapter.java
 C:\Users\Usuario\Documents\Codex\2026-04-27\hola\Prueba_Técnica–Desarrollo_BackEnd-Amaris\src\main\java\com\btg\funds\infrastructure\adapter\out\persistence\postgres\ClientRepositoryAdapter.java
 C:\Users\Usuario\Documents\Codex\2026-04-27\hola\Prueba_Técnica–Desarrollo_BackEnd-Amaris\src\main\java\com\btg\funds\infrastructure\adapter\out\persistence\postgres\entity\ClientEntity.java
 C:\Users\Usuario\Documents\Codex\2026-04-27\hola\Prueba_Técnica–Desarrollo_BackEnd-Amaris\src\main\java\com\btg\funds\infrastructure\adapter\out\persistence\postgres\entity\FundEntity.java
@@ -47,6 +48,7 @@ C:\Users\Usuario\Documents\Codex\2026-04-27\hola\Prueba_Técnica–Desarrollo_Ba
 C:\Users\Usuario\Documents\Codex\2026-04-27\hola\Prueba_Técnica–Desarrollo_BackEnd-Amaris\src\main\java\com\btg\funds\infrastructure\adapter\out\persistence\postgres\repository\SpringTransactionRepository.java
 C:\Users\Usuario\Documents\Codex\2026-04-27\hola\Prueba_Técnica–Desarrollo_BackEnd-Amaris\src\main\java\com\btg\funds\infrastructure\adapter\out\persistence\postgres\SubscriptionRepositoryAdapter.java
 C:\Users\Usuario\Documents\Codex\2026-04-27\hola\Prueba_Técnica–Desarrollo_BackEnd-Amaris\src\main\java\com\btg\funds\infrastructure\adapter\out\persistence\postgres\TransactionRepositoryAdapter.java
+C:\Users\Usuario\Documents\Codex\2026-04-27\hola\Prueba_Técnica–Desarrollo_BackEnd-Amaris\src\main\java\com\btg\funds\infrastructure\config\AwsSnsConfig.java
 C:\Users\Usuario\Documents\Codex\2026-04-27\hola\Prueba_Técnica–Desarrollo_BackEnd-Amaris\src\main\java\com\btg\funds\infrastructure\config\DataSeeder.java
 C:\Users\Usuario\Documents\Codex\2026-04-27\hola\Prueba_Técnica–Desarrollo_BackEnd-Amaris\src\main\java\com\btg\funds\infrastructure\config\OpenApiConfig.java
 C:\Users\Usuario\Documents\Codex\2026-04-27\hola\Prueba_Técnica–Desarrollo_BackEnd-Amaris\src\main\java\com\btg\funds\infrastructure\config\SecurityConfig.java
